@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<div class="container">
+        <h1 class="mt-5">Menu</h1>
+        <ul class="list-unstyled">
+            <li><a href="{% url 'index' %}" class="btn btn-primary">Home</a></li>
+            <li><a href="{% url 'manage_categories' %}" class="btn btn-primary">Manage Categories</a></li>
+            <li><a href="{% url 'add_income' %}" class="btn btn-primary">Add Income</a></li>
+            <li><a href="{% url 'add_outcome' %}" class="btn btn-primary">Add Outcome</a></li>
+            <li><a href="{% url 'list_transactions' %}" class="btn btn-primary">List Transactions</a></li>
+        </ul>
+        <a href="{% url 'list_transactions' %}" class="btn btn-secondary mt-3">Back to List</a>
+    </div>
+<h2>Seznam Transakcí</h2>
+<h3>Příjmy</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Název</th>
+            <th>Částka</th>
+            <th>Datum</th>
+            <th>Kategorie</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in incomes %}
+        <tr>
+            <td>{{ item.id }}</td>
+            <form method="POST">
+            {% csrf_token %}
+            <td><a href='{% url 'edit_income' item.id  %}'>{{ item.name }}</a></td>
+            </form>
+            <td>{{ item.amount }}</td>
+            <td>{{ item.date }}</td>
+            <td>{{ item.category }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h3>Výdaje</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Název</th>
+            <th>Částka</th>
+            <th>Datum</th>
+            <th>Kategorie</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in outcomes %}
+        <tr>
+            <td>{{ item.id }}</td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.amount }}</td>
+            <td>{{ item.date }}</td>
+            <td>{{ item.category }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h3>Bilance</h3>
+<p>{{ balance }}%</p>
+{% endblock %}
