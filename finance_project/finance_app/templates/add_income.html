@@ -2,6 +2,16 @@
 
 {% block content %}
 <style>
+body {
+
+background-color:#0f0f61;
+color:white;
+	
+}
+label {font-weight:bold;
+margin-bottom:5px;
+
+}
 h2 {
 font-weight:bold !important;}
 
@@ -13,16 +23,17 @@ font-weight:bold !important;}
 .hr-main {
     height: 6px;
     min-width: 350px;
-    background-color: #351296;
+    background-color: #0a0a33;
     border: none;
     margin: 0; /* Odstraní mezery kolem čáry */
+    margin-top:5px;
     opacity:1;
 }
 
 .hr-secondary {
     height: 4px;
     min-width: 350px;
-    background-color: #4503fc; /* Světlejší barva */
+    background-color: #2A2A4D;
     border: none;
     margin: 0; /* Odstraní mezery kolem čáry */
     opacity:1;
@@ -31,17 +42,17 @@ font-weight:bold !important;}
 
 
 </style>
-<h2> <i class="bi bi-shield-plus"></i> Přidat Příjem</h2>
+<h2> <i class="bi bi-shield-plus"></i> Přidat příjem</h2>
 <div class="hr-container">
     <hr class="hr-main">
     <hr class="hr-secondary">
 </div>
 
-<h6>Celkové příjmy: <strong>{{ income_all }} Kč </strong></h6>
+<h6>Celkové příjmy: <strong>{{ income_all|floatformat:2 }} Kč </strong></h6>
 <hr>
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit" class="btn btn-primary"><i class="bi bi-chevron-left"></i>   Přidat</button>
+    <button type="submit" class="btn btn-success float-end"><i style="position:relative;top:1px !important;" class="bi bi-check2-circle"></i>   Přidat</button>
 </form>
 {% endblock %}

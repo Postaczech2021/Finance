@@ -1,119 +1,143 @@
-
-    <div class="menu-c">
-        <div class="hamburger-icon" onclick="toggleMenu()">
-            ☰ <!-- Hamburger icon -->
-        </div>
-        <div class="menu" id="menu">
-            <div class="close-icon" onclick="toggleMenu()">×</div>
-            <a href="{% url 'add_income' %}">  <i class="bi bi-shield-plus"></i>   Přidat příjem</a>
-<hr>
-            <a href="{% url 'add_outcome' %}">  <i class="bi bi-shield-minus"></i>  Přidat výdej</a>
-            <hr>
-            <a href="{% url 'list_transactions' %}"><i class="bi bi-receipt"></i>   Seznam transakcí</a>
-        </div>
+<div class="menu-c">
+    <div class="hamburger-icon" onclick="toggleMenu()">
+<i  class="bi bi-cash-coin"></i>       
     </div>
+    <div class="settings-icon" onclick="toggleSettings()">
+        <i class="bi bi-gear-fill"></i>
+    </div>
+    <div class="menu" id="menu">
+        <div class="close-icon" onclick="toggleMenu()">×</div>
+        <a href="{% url 'add_income' %}">  <i class="bi bi-shield-plus"></i>   Přidat příjem</a>
+        <hr>
+        <a href="{% url 'add_outcome' %}">  <i class="bi bi-shield-minus"></i>  Přidat výdej</a>
+        <hr>
+        <a href="{% url 'list_transactions' %}"><i class="bi bi-receipt"></i>   Seznam transakcí</a>
+<hr>
+    </div>
+    <div class="settings" id="settings">
+        <div class="close-icon" onclick="toggleSettings()">×</div>
+        <a href="{% url 'manage_categories' %}">  <i class="bi bi-tools"></i>   Manage Categories</a>
+    </div>
+</div>
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin-top: 60px;
+        padding: 0;
+    }
 
-        .menu-c {
-            width: 100%;
-            height: 50px;
-            background-color: #4503fc;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 1000;
-        }
+    .menu-c {
+        width: 100%;
+        height: 76px;
+        background-color: #4503fc;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position:fixed;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+    }
+    .menu-c i {
 
-        .hamburger-icon {
-            font-size: 30px;
-            cursor: pointer;
-            color: white;
-        }
+        margin-right:10px;
+    	
+    }
 
-        .menu {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
-            color: white;
-            z-index: 999;
-            padding-top: 60px;
-            transition: transform 0.3s ease-in-out;
+    .hamburger-icon, .settings-icon {
+        font-size: 30px;
+        cursor: pointer;
+        color: white !important;
+        margin: 0 10px;
+    }
+
+    .menu, .settings {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.9);
+        color: white;
+        z-index: 999;
+        padding-top: 20px;
+        transition: transform 0.3s ease-in-out;
+        transform: translateX(-100%);
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .menu a, .settings a {
+        padding: 10px 20px;
+        text-decoration: none;
+        color: white;
+        display: block;
+        transition: background 0.3s;
+    }
+
+    .menu a:hover, .settings a:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .close-icon {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 30px;
+        cursor: pointer;
+    }
+
+    .menu.show, .settings.show {
+        display: block;
+        transform: translateX(0);
+        animation: slideInLeft 0.5s forwards;
+    }
+
+    .menu.hide, .settings.hide {
+        animation: slideOutLeft 0.5s forwards;
+    }
+
+    @keyframes slideInLeft {
+        from {
             transform: translateX(-100%);
-            font-size:18px;
-            font-weight:bold;
         }
-
-        .menu a {
-            padding: 10px 20px;
-            text-decoration: none;
-            color: white;
-            display: block;
-            transition: background 0.3s;
-        }
-
-        .menu a:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        .close-icon {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 30px;
-            cursor: pointer;
-        }
-
-        .menu.show {
-            display: block;
+        to {
             transform: translateX(0);
-            animation: slideInLeft 0.5s forwards;
         }
+    }
 
-        .menu.hide {
-            animation: slideOutLeft 0.5s forwards;
+    @keyframes slideOutLeft {
+        from {
+            transform: translateX(0);
         }
+        to {
+            transform: translateX(-100%);
+        }
+    }
+</style>
 
-        @keyframes slideInLeft {
-            from {
-                transform: translateX(-100%);
-            }
-            to {
-                transform: translateX(0);
-            }
+<script>
+    function toggleMenu() {
+        const menu = document.getElementById('menu');
+        if (menu.classList.contains('show')) {
+            menu.classList.remove('show');
+            menu.classList.add('hide');
+        } else {
+            menu.classList.remove('hide');
+            menu.classList.add('show');
         }
+    }
 
-        @keyframes slideOutLeft {
-            from {
-                transform: translateX(0);
-            }
-            to {
-                transform: translateX(-100%);
-            }
+    function toggleSettings() {
+        const settings = document.getElementById('settings');
+        if (settings.classList.contains('show')) {
+            settings.classList.remove('show');
+            settings.classList.add('hide');
+        } else {
+            settings.classList.remove('hide');
+            settings.classList.add('show');
         }
-    </style>
-
-    <script>
-        function toggleMenu() {
-            const menu = document.getElementById('menu');
-            if (menu.classList.contains('show')) {
-                menu.classList.remove('show');
-                menu.classList.add('hide');
-            } else {
-                menu.classList.remove('hide');
-                menu.classList.add('show');
-            }
-        }
-    </script>
+    }
+</script>

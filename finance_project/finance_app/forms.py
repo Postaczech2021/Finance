@@ -11,7 +11,7 @@ class IncomeForm(forms.ModelForm):
             'category': forms.Select(attrs={'class': 'form-control'}),
         }
         labels = {
-                    'name': 'Název',
+                    'name': 'Název příjmové položky',
                     'amount': 'Částka',
                     'category': 'Kategorie',
                 }
