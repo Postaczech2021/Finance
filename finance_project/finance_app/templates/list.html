@@ -1,20 +1,7 @@
 {% extends "base.html" %}
-
 {% block content %}
-
-
-<div class="container">
-        <h1 class="mt-5">Menu</h1>
-        <ul class="list-unstyled">
-            <li><a href="{% url 'index' %}" class="btn btn-primary">Home</a></li>
-            <li><a href="{% url 'manage_categories' %}" class="btn btn-primary">Manage Categories</a></li>
-            <li><a href="{% url 'add_income' %}" class="btn btn-primary">Add Income</a></li>
-            <li><a href="{% url 'add_outcome' %}" class="btn btn-primary">Add Outcome</a></li>
-            <li><a href="{% url 'list_transactions' %}" class="btn btn-primary">List Transactions</a></li>
-        </ul>
-        <a href="{% url 'list_transactions' %}" class="btn btn-secondary mt-3">Back to List</a>
-    </div>
-<h2>Seznam Transakcí</h2>
+{% include 'menu.html' %}
+<h3>Seznam Transakcí</h3>
 <h3>Příjmy</h3>
 <table class="table">
     <thead>
