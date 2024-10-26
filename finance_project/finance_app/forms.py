@@ -11,14 +11,14 @@ class IncomeForm(forms.ModelForm):
             'category': forms.Select(attrs={'class': 'form-control'}),
         }
         labels = {
-                    'name': 'Název příjmové položky',
-                    'amount': 'Částka',
-                    'category': 'Kategorie',
-                }
+            'name': 'Název položky',
+            'amount': 'Částka',
+            'category': 'Kategorie',
+        }
 
-        def __init__(self, *args, **kwargs):
-            super().__init__(*args, **kwargs)
-            self.fields['category'].queryset = Category.objects.filter(is_income=True)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['category'].queryset = Category.objects.filter(is_income=True).order_by('-name')
 
 class OutcomeForm(forms.ModelForm):
     class Meta:
@@ -30,6 +30,15 @@ class OutcomeForm(forms.ModelForm):
             'category': forms.Select(attrs={'class': 'form-control'}),
     
         }
+        labels = {
+            'name': 'Název výdajové položky',
+            'amount': 'Částka',
+            'category': 'Kategorie',
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['category'].queryset = Category.objects.filter(is_income=False)
 
 class CategoryForm(forms.ModelForm):
     class Meta:
@@ -41,7 +50,5 @@ class CategoryForm(forms.ModelForm):
             
         }
         labels = {
-
-                     'is_income':'Pouze příjmová kategorie',
-            
+            'is_income':'Pouze příjmová kategorie',
         }

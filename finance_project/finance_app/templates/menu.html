@@ -9,14 +9,15 @@
         <div class="close-icon" onclick="toggleMenu()">×</div>
         <a href="{% url 'add_income' %}">  <i class="bi bi-shield-plus"></i>   Přidat příjem</a>
         <hr>
-        <a href="{% url 'add_outcome' %}">  <i class="bi bi-shield-minus"></i>  Přidat výdej</a>
+        <a href="{% url 'add_outcome' %}">  <i class="bi bi-shield-minus"></i>  Přidat výdaj</a>
         <hr>
         <a href="{% url 'list_transactions' %}"><i class="bi bi-receipt"></i>   Seznam transakcí</a>
 <hr>
     </div>
     <div class="settings" id="settings">
         <div class="close-icon" onclick="toggleSettings()">×</div>
-        <a href="{% url 'manage_categories' %}">  <i class="bi bi-tools"></i>   Manage Categories</a>
+        <a href="{% url 'manage_categories' %}">  <i class="bi bi-tools"></i> Správa kategorií</a>
+        <hr>
     </div>
 </div>
 
@@ -25,6 +26,11 @@
         font-family: Arial, sans-serif;
         margin-top: 60px;
         padding: 0;
+    }
+    
+    hr {
+        
+        margin: 0px !important;
     }
 
     .menu-c {
@@ -62,7 +68,7 @@
         background-color: rgba(0, 0, 0, 0.9);
         color: white;
         z-index: 999;
-        padding-top: 20px;
+        padding-top: 0px;
         transition: transform 0.3s ease-in-out;
         transform: translateX(-100%);
         font-size: 18px;
@@ -70,7 +76,7 @@
     }
 
     .menu a, .settings a {
-        padding: 10px 20px;
+        padding: 20px 20px;
         text-decoration: none;
         color: white;
         display: block;
@@ -83,7 +89,7 @@
 
     .close-icon {
         position: absolute;
-        top: 20px;
+        top: 8px;
         right: 20px;
         font-size: 30px;
         cursor: pointer;

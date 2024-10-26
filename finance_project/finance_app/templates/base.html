@@ -8,12 +8,58 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    
 </head>
 <body>
+<style>
+    
+    body {
+
+background-color:#0f0f61;
+color:white;
+	
+}
+label {font-weight:bold;
+margin-bottom:5px;
+
+}
+    .darkbtn {
+    
+    background-color: #4503fc !important;
+    color:white;
+}
+    
+    h2 {
+font-weight:bold !important;}
+
+.hr-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.hr-main {
+    height: 6px;
+    min-width: 350px;
+    background-color: #0a0a33;
+    border: none;
+    margin: 0; /* Odstraní mezery kolem čáry */
+    margin-top:5px;
+    opacity:1;
+}
+
+.hr-secondary {
+    height: 4px;
+    min-width: 350px;
+    background-color: #21216f;
+    border: none;
+    margin: 0; /* Odstraní mezery kolem čáry */
+    opacity:1;
+    margin-bottom:15px;
+}
+</style>
     <div class="container mt-4">
     {% include 'menu.html' %}
-    <div style="height:40px;"></div>
+    <div style="height:30px;"></div>
         {% block content %}
         {% endblock %}
     </div>

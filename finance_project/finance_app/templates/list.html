@@ -1,7 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
-<h3>Seznam Transakcí</h3>
-<h3>Příjmy</h3>
+
+<h2 class="py-2"><i class="bi bi-receipt"></i> Seznam Transakcí</h2>
+    <div class="hr-container">
+    <hr class="hr-main">
+    <hr class="hr-secondary">
+</div>
+      
+<h6 class="py-3">Bilance: <strong>{{ balance|floatformat:2 }}%</strong></h6>
+<h3 class="py-2">Příjmy</h3>
 <table class="table">
     <thead>
         <tr>
@@ -28,7 +35,7 @@
     </tbody>
 </table>
 
-<h3>Výdaje</h3>
+<h3 class="py-2">Výdaje</h3>
 <table class="table">
     <thead>
         <tr>
@@ -52,6 +59,5 @@
     </tbody>
 </table>
 
-<h3>Bilance</h3>
-<p>{{ balance }}%</p>
+
 {% endblock %}

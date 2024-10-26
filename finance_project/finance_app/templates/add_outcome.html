@@ -1,10 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Přidat Výdaj</h2>
-<form method="post">
+
+<h2 class="py-2"> <i class="bi bi-shield-minus"></i> Přidat výdaj</h2>
+<div class="hr-container">
+    <hr class="hr-main">
+    <hr class="hr-secondary">
+</div>
+<h6 class="py-3">Celkové výdaje: <strong>{{ outcome_all|floatformat:2 }} Kč </strong></h6>    
+<form class="mt-4" method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Přidat</button>
+    <button type="submit" class="mt-3 btn darkbtn float-end"><i style="position:relative;top:1px !important;" class="bi bi-check2-circle"></i> Přidat výdaj</button>
 </form>
 {% endblock %}
