@@ -12,7 +12,6 @@ def index(request):
 def add_income(request):
     cache.clear()
     income_all = Income.objects.aggregate(Sum('amount'))['amount__sum'] or 0
-    print("Zavolání funkce add_income")  # Přidáno pro kontrolu
     if request.method == 'POST':
         form = IncomeForm(request.POST)
         if form.is_valid():
