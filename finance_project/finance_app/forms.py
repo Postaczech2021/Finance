@@ -50,5 +50,6 @@ class CategoryForm(forms.ModelForm):
             
         }
         labels = {
+            'name':'Název kategorie',
             'is_income':'Pouze příjmová kategorie',
         }
