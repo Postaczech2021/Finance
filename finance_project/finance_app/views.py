@@ -38,15 +38,10 @@ def list_transactions(request):
     incomes = Income.objects.all()
     outcomes = Outcome.objects.all()
 
-    total_income = sum(income.amount for income in incomes)
-    total_outcome = sum(outcome.amount for outcome in outcomes)
-
-    balance = (total_income - total_outcome) / total_income * 100 if total_income else 0
-
     context = {
         'incomes': incomes,
         'outcomes': outcomes,
-        'balance': balance
+        'no_incomes': not incomes.exists()
     }
 
     return render(request, 'list.html', context)
@@ -64,11 +59,9 @@ def edit_income(request, income_id):
     return render(request, 'edit_income.html', {'form': form})
 
 def delete_income(request, income_id):
-    income = get_object_or_404(Income, id=income_id)
-    if request.method == 'POST':
-        income.delete()
-        return redirect('list')
-    return render(request, 'confirm_delete.html', {'item': income})
+    income = Income.objects.get(pk=income_id)
+    income.delete()
+    return redirect('list_transactions')
 
 def edit_outcome(request, outcome_id):
     outcome = get_object_or_404(Outcome, id=outcome_id)
