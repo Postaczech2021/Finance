@@ -6,40 +6,46 @@
     <hr class="hr-main">
     <hr class="hr-secondary">
 </div>
-      
+
 <h6 class="py-3">Bilance: <strong>{{ balance|floatformat:2 }}%</strong></h6>
-<h3 class="py-2">Příjmy</h3>
-<table class="table">
+<h4 class="py-2"><i class="bi bi-cash"></i> Příjmy</h4>
+      <div class="hr-container">
+    <hr class="hr-main">
+    <hr class="hr-secondary">
+</div>
+<table class="table mt-4">
     <thead>
         <tr>
-            <th>ID</th>
-            <th>Název</th>
+
+            <th>Název položky</th>
             <th>Částka</th>
             <th>Datum</th>
-            <th>Kategorie</th>
+
         </tr>
     </thead>
     <tbody>
         {% for item in incomes %}
-        <tr>
-            <td>{{ item.id }}</td>
             <form method="POST">
             {% csrf_token %}
             <td><a href='{% url 'edit_income' item.id  %}'>{{ item.name }}</a></td>
             </form>
-            <td>{{ item.amount }}</td>
-            <td>{{ item.date }}</td>
-            <td>{{ item.category }}</td>
+            <td>{{ item.amount|floatformat:0 }} Kč</td>
+            <td>{{ item.date|date:"d.m.Y" }}</td>
+           
         </tr>
         {% endfor %}
     </tbody>
 </table>
 
-<h3 class="py-2">Výdaje</h3>
-<table class="table">
+<h4 class="py-2"><i class="bi bi-cash-coin"></i> Výdaje</h4>
+      <div class="hr-container">
+    <hr class="hr-main">
+    <hr class="hr-secondary">
+</div>
+<table class="table mt-4">
     <thead>
         <tr>
-            <th>ID</th>
+
             <th>Název</th>
             <th>Částka</th>
             <th>Datum</th>
@@ -49,7 +55,7 @@
     <tbody>
         {% for item in outcomes %}
         <tr>
-            <td>{{ item.id }}</td>
+
             <td>{{ item.name }}</td>
             <td>{{ item.amount }}</td>
             <td>{{ item.date }}</td>
