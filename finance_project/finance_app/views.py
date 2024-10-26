@@ -41,7 +41,8 @@ def list_transactions(request):
     context = {
         'incomes': incomes,
         'outcomes': outcomes,
-        'no_incomes': not incomes.exists()
+        'no_incomes': not incomes.exists(),
+        'no_outcomes': not outcomes.exists()
     }
 
     return render(request, 'list.html', context)
@@ -75,11 +76,10 @@ def edit_outcome(request, outcome_id):
     return render(request, 'edit_outcome.html', {'form': form})
 
 def delete_outcome(request, outcome_id):
-    outcome = get_object_or_404(Outcome, id=outcome_id)
-    if request.method == 'POST':
-        outcome.delete()
-        return redirect('list')
-    return render(request, 'confirm_delete.html', {'item': outcome})
+    outcome = Outcome.objects.get(pk=outcome_id)
+    outcome.delete()
+    return redirect('list_transactions')
+
 
 def manage_categories(request):
     categories = Category.objects.all()

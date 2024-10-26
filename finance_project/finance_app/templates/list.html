@@ -47,29 +47,32 @@
       <div class="hr-container">
     <hr class="hr-main">
     <hr class="hr-secondary">
-</div>
+
+    {% if no_outcomes %}
+    <p class="py-3">Žádné výdaje</p>
+{% else %}
 <table class="table mt-4">
     <thead>
         <tr>
 
-            <th>Název</th>
             <th>Částka</th>
             <th>Datum</th>
-            <th>Kategorie</th>
+            <th>Akce</th>
         </tr>
     </thead>
     <tbody>
         {% for item in outcomes %}
         <tr>
-
-            <td>{{ item.name }}</td>
-            <td>{{ item.amount }}</td>
-            <td>{{ item.date }}</td>
-            <td>{{ item.category }}</td>
+s
+            <td>{{ item.amount|floatformat:0 }} Kč</td>
+            <td>{{ item.date|date:"d.m.Y" }}</td>
+            <td><a class="btn darkbtn" href='{% url 'edit_outcome' item.id  %}'><i class="bi bi-pen"></i></a>
+            <a class="btn dangerbtn" href='{% url 'delete_outcome' item.id  %}'><i class="bi bi-trash"></i></a>
+            </td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
-
+{% endif %}
 
 {% endblock %}
