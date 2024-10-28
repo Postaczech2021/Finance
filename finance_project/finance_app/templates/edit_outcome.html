@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 class="py-2"> <i class="bi bi-shield-plus"></i> Editace</h2>
+    <h5 class="py-1">Upravit položku ,,<i>{{ outcome.name }}</i>"</h5>
+<div class="hr-container">
+    <hr class="hr-main">
+    <hr class="hr-secondary">
+</div>
+
+<form class="mt-4" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="mt-3 btn darkbtn float-end"><i style="position:relative;top:1px !important;" class="bi bi-check2-circle"></i>   Uložit položku</button>
+</form>
+
+{% endblock %}

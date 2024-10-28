@@ -38,11 +38,16 @@ def list_transactions(request):
     incomes = Income.objects.all()
     outcomes = Outcome.objects.all()
 
+    total_income = Income.objects.aggregate(Sum('amount'))['amount__sum'] or 0
+    total_outcome = Outcome.objects.aggregate(Sum('amount'))['amount__sum'] or 0
+
     context = {
         'incomes': incomes,
         'outcomes': outcomes,
         'no_incomes': not incomes.exists(),
-        'no_outcomes': not outcomes.exists()
+        'no_outcomes': not outcomes.exists(),
+        'total_income': total_income,
+        'total_outcome': total_outcome,
     }
 
     return render(request, 'list.html', context)
@@ -70,10 +75,10 @@ def edit_outcome(request, outcome_id):
         form = OutcomeForm(request.POST, instance=outcome)
         if form.is_valid():
             form.save()
-            return redirect('list')
+            return redirect('list_transactions')
     else:
         form = OutcomeForm(instance=outcome)
-    return render(request, 'edit_outcome.html', {'form': form})
+    return render(request, 'edit_outcome.html', {'form': form, 'outcome': outcome})
 
 def delete_outcome(request, outcome_id):
     outcome = Outcome.objects.get(pk=outcome_id)

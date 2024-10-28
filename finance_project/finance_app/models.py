@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.utils import timezone
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
     is_income = models.BooleanField(default=False)
@@ -15,7 +15,8 @@ class Income(models.Model):
 
 class Outcome(models.Model):
     name = models.CharField(max_length=100)
+    quantity = models.IntegerField(default=1)
     amount = models.FloatField()
-    date = models.DateField(auto_now_add=True,editable=True)
+    date = models.DateField(default=timezone.now,editable=True)
     category = models.ForeignKey(Category, on_delete=models.SET_DEFAULT, default=1)
 
