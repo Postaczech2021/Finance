@@ -38,7 +38,7 @@
         {% for item in incomes %}
 
             <td>{{ item.name }}</td>
-            <td>{{ item.amount|floatformat:0 }} Kč</td>
+            <td>{{ item.amount|floatformat:2 }} Kč</td>
             <td>{{ item.date|date:"d.m.Y" }}</td>
             <td><a class="btn darkbtn" href='{% url 'edit_income' item.id  %}'><i class="bi bi-pen"></i></a>
             <a class="btn dangerbtn" href='{% url 'delete_income' item.id  %}'><i class="bi bi-trash"></i></a>
