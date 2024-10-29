@@ -12,102 +12,78 @@
 </head>
 <body>
 <style>
-
-    tbody, td, tfoot, th, thead, tr {
-    border-color: inherit;
-
-    border-bottom:8px solid #0f0f61 !important;
-    border-width: 0;
-    font-size:14px;
-}
-
-
-    .table>:not(caption)>*>* {
-    padding: 15px;
-    color: white;
-        font-weight: bold;
-    background-color: #0a0a32 !important;
-    border-bottom-width: var(--bs-border-width);
-    box-shadow: inset 0 0 0 9999px var(--bs-table-bg-state, var(--bs-table-bg-type, var(--bs-table-accent-bg)));
-}
-
-    .table thead th {
-    background-color: #21219c !important; /* Barva pozadí záhlaví */ }
-
-    .table tbody td  {
-
-    padding: 12px; /* 5px nahoře a dole, 0px vlevo a vpravo */
-    vertical-align: middle;
-}
-
-   .nav-tabs, .nav-link {
-
-     border-bottom: 1px solid #5454da; !important;
-
-}
-
-   .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
-
-    background-color:#4503fc;
-           border:0;
-        border-bottom:1px solid #5454da; !important;
-   
-       color:white;
-
-
-}
-
     body {
-
-background-color:#0f0f61;
-color:white;
-
-}
-label {font-weight:bold;
-margin-bottom:5px;
-
-}
-
-.dangerbtn {
-
-     background-color: #f30000 !important;
-    color:white;
-
-}
-    .darkbtn {
-
-    background-color: #4503fc !important;
-    color:white;
-}
-
+        background-color: #0f0f61;
+        color: white;
+    }
     h2 {
-font-weight:bold !important;}
+        font-weight: bold !important;
+    }
+    label {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+    .table>:not(caption)>*>* {
+        padding: 15px;
+        color: white;
+        font-weight: bold;
+        background-color: #0a0a32 !important;
+        border-bottom: 8px solid #0f0f61 !important;
+        box-shadow: inset 0 0 0 9999px var(--bs-table-bg-state, var(--bs-table-bg-type, var(--bs-table-accent-bg)));
+    }
+    .table thead th {
+        background-color: #21219c !important;
+    }
+    .table tbody td {
+        padding: 12px;
+        vertical-align: middle;
+    }
+    .nav-tabs, .nav-link {
 
-.hr-container {
-    display: flex;
-    flex-direction: column;
-}
+                border: 0px !important;
 
-.hr-main {
-    height: 6px;
-    min-width: 350px;
-    background-color: #0a0a33;
-    border: none;
-    margin: 0; /* Odstraní mezery kolem čáry */
-    margin-top:5px;
-    opacity:1;
-}
+    }
 
-.hr-secondary {
-    height: 4px;
-    min-width: 350px;
-    background-color: #21216f;
-    border: none;
-    margin: 0; /* Odstraní mezery kolem čáry */
-    opacity:1;
-    margin-bottom:15px;
-}
+    .nav-tabs {
+        border-bottom: 2px solid #4503fc !important;
+    }
+
+    .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+        background-color: #4503fc;
+        color: white;
+        border-bottom: 0px solid red !important;
+    }
+    .dangerbtn {
+        background-color: #f30000 !important;
+        color: white;
+    }
+    .darkbtn {
+        background-color: #4503fc !important;
+        color: white;
+    }
+    .hr-container {
+        display: flex;
+        flex-direction: column;
+
+    }
+    .hr-main, .hr-secondary {
+        border: none;
+        margin: 0;
+        min-width: 350px;
+        opacity:0.75;
+    }
+    .hr-main {
+        height: 6px;
+        background-color: #0a0a33;
+        margin-top: 5px;
+    }
+    .hr-secondary {
+        height: 4px;
+        background-color: #21216f;
+        margin-bottom: 15px;
+    }
 </style>
+
     <div class="container mt-4">
     {% include 'menu.html' %}
     <div style="height:30px;"></div>

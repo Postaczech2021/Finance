@@ -2,95 +2,99 @@
 {% block content %}
 
 <h2 class="py-2"><i class="bi bi-receipt"></i> Seznam Transakcí</h2>
-    <div class="hr-container">
+<div class="hr-container">
     <hr class="hr-main">
     <hr class="hr-secondary">
 </div>
 
-<h6 class="py-3">Seznam všech příjmů a výdajů</h6>
+<div class="container">
+    <ul class="nav nav-tabs mt-4" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="income-tab" data-bs-toggle="tab" data-bs-target="#income" type="button" role="tab" aria-controls="income" aria-selected="true"><i class="bi bi-shield-plus"></i> Příjmy</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="outcome-tab" data-bs-toggle="tab" data-bs-target="#outcome" type="button" role="tab" aria-controls="outcome" aria-selected="false"><i class="bi bi-shield-minus"></i> Výdaje</button>
+        </li>
+    </ul>
 
-    <div class="container mt-2" style="margin:0 !important;">
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="income-tab" data-bs-toggle="tab" data-bs-target="#income" type="button" role="tab" aria-controls="income" aria-selected="true"><i class="bi bi-shield-plus"></i> Příjmy</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="outcome-tab" data-bs-toggle="tab" data-bs-target="#outcome" type="button" role="tab" aria-controls="outcome" aria-selected="false"><i class="bi bi-shield-minus"></i> Výdaje</button>
-            </li>
-        </ul>
-        <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="income" role="tabpanel" aria-labelledby="income-tab">
-              <h6 class="py-4">Celkové příjmy: <strong>{{ total_income|floatformat:0 }} Kč</strong></h6>
-                {% if no_incomes %}
-    <p class="py-3">Žádné příjmy</p>
-{% else %}
-<table class="table mt-2">
-    <thead>
-        <tr>
-            
-                    <th style="width:23px;">Název</th>
-                      <th style="width:180px !important;">Částka</th>
-                      <th>Datum</th>
-                   <th>Akce</th>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="income" role="tabpanel" aria-labelledby="income-tab">
+            <h6 class="py-4">Celkové příjmy: <strong>{{ total_income|floatformat:0 }} Kč</strong></h6>
+            {% if no_incomes %}
+                <p class="py-3">Žádné příjmy</p>
+            {% else %}
+                <div class="row">
+                    <div class="col-12">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Název</th>
+                                    <th>Částka</th>
+                                    <th>Datum</th>
+                                    <th>Akce</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in incomes %}
+                                    <tr>
+                                        <td>{{ item.name }}</td>
+                                        <td style="color:#9bf542;">+ {{ item.amount|floatformat:0 }} Kč</td>
+                                        <td>{{ item.date|date:"d.m.Y" }}</td>
+                                        <td>
+                                            <a class="btn darkbtn" href='{% url 'edit_income' item.id  %}'><i class="bi bi-pen"></i></a>
+                                            <a class="btn dangerbtn" href='{% url 'delete_income' item.id  %}'><i class="bi bi-trash"></i></a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
 
-        </tr>
-    </thead>
-    <tbody>
-        {% for item in incomes %}
-
-            <td>{{ item.name }}</td>
-            <td style="color:#9bf542;">+ {{ item.amount|floatformat:2 }} Kč</td>
-            <td>{{ item.date|date:"d.m.Y" }}</td>
-            <td><a class="btn darkbtn" href='{% url 'edit_income' item.id  %}'><i class="bi bi-pen"></i></a>
-            <a class="btn dangerbtn" href='{% url 'delete_income' item.id  %}'><i class="bi bi-trash"></i></a>
-            </td>
-
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-{% endif %}
-
-
-            </div>
-            <div class="tab-pane fade" id="outcome" role="tabpanel" aria-labelledby="outcome-tab">
-
-             <h6 class="py-4">Celkové výdaje: <strong>{{ total_outcome|floatformat:0 }} Kč</strong></h6>
-    {% if no_outcomes %}
-    <p class="py-3">Žádné výdaje</p>
-{% else %}
-<table class="table mt-2">
-    <thead>
-        <tr>
-
-            <th style="width:23px;">Název</th>    
-            <th style="width:180px !important;">Částka</th>
-            <th>Datum</th>
-            <th>Akce</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for item in outcomes %}
-        <tr>
-            <td>{{ item.name }}
-    {% if item.quantity != 1 %} 
-        ( {{ item.quantity }} ks )
-    {% endif %}</td>
-            <td style="color:red;">- {{ item.amount|floatformat:0 }} Kč</td>
-            <td style="width: 90px !important;">{{ item.date|date:"d.m.Y" }}</td>
-            <td><a class="btn darkbtn" href='{% url 'edit_outcome' item.id  %}'><i class="bi bi-pen"></i></a>
-            <a class="btn dangerbtn" href='{% url 'delete_outcome' item.id  %}'><i class="bi bi-trash"></i></a>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-{% endif %}
-            </div>
+        <div class="tab-pane fade" id="outcome" role="tabpanel" aria-labelledby="outcome-tab">
+            <h6 class="py-4">Celkové výdaje: <strong>{{ total_outcome|floatformat:0 }} Kč</strong></h6>
+            {% if no_outcomes %}
+                <p class="py-3">Žádné výdaje</p>
+            {% else %}
+                <div class="row">
+                    <div class="col-12">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Název</th>
+                                    <th>Částka</th>
+                                    <th>Datum</th>
+                                    <th>Akce</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in outcomes %}
+                                    <tr>
+                                        <td>{{ item.name }}
+                                            {% if item.quantity != 1 %}
+                                                ( {{ item.quantity }} ks )
+                                            {% endif %}
+                                        </td>
+                                        <td style="color:red;">- {{ item.amount|floatformat:0 }} Kč</td>
+                                        <td>{{ item.date|date:"d.m.Y" }}</td>
+                                        <td>
+                                            <a class="btn darkbtn" href='{% url 'edit_outcome' item.id  %}'><i class="bi bi-pen"></i></a>
+                                            <a class="btn dangerbtn" href='{% url 'delete_outcome' item.id  %}'><i class="bi bi-trash"></i></a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% endif %}
         </div>
     </div>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 
 {% endblock %}
