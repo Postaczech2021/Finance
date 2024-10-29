@@ -2,11 +2,37 @@
 # Create your views here.
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Income, Outcome, Category
-from django.db.models import Sum
+from django.db.models import Sum, Count
 from .forms import IncomeForm, OutcomeForm, CategoryForm
 
 def index(request):
     return render(request, 'index.html')
+
+def statistics(request):
+    categories = Category.objects.filter(name__icontains='nákup')
+    total_amount = Outcome.objects.filter(category__in=categories).aggregate(Sum('amount'))['amount__sum'] or 1  # Ochrana proti dělení nulou
+
+    outcomes_by_category = {}
+
+    for category in categories:
+        outcomes = Outcome.objects.filter(category=category)
+        total_items = outcomes.aggregate(Count('id'))['id__count']
+        total_spent = outcomes.aggregate(Sum('amount'))['amount__sum'] or 0
+        percentage_of_total = (total_spent / total_amount) * 100
+
+        outcomes_by_category[category.name] = {
+            'outcomes': outcomes,
+            'total_items': total_items,
+            'total_spent': total_spent,
+            'percentage_of_total': percentage_of_total,
+        }
+
+    context = {
+        'outcomes_by_category': outcomes_by_category,
+        'total_amount': total_amount,
+    }
+
+    return render(request, 'statistics.html', context)
 
 
 def add_income(request):
@@ -59,7 +85,7 @@ def edit_income(request, income_id):
         form = IncomeForm(request.POST, instance=income)
         if form.is_valid():
             form.save()
-            return redirect('list')
+            return redirect('list_transactions')
     else:
         form = IncomeForm(instance=income)
     return render(request, 'edit_income.html', {'form': form})

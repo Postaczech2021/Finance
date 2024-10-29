@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 class="py-2"><i class="bi bi-shield-plus"></i> Přehled obchodů</h2>
+
+<div class="hr-container">
+   <hr class="hr-main">
+     <hr class="hr-secondary">
+</div>
+
+<div class="graph_shop">
+    <canvas class="py-2" id="shopChart"></canvas>
+</div>
+
+
+{% for category, data in outcomes_by_category.items %}
+    <h3 class="mt-2">{{ category|cut:" - nákup" }}</h3>
+    <div class="hr-container">
+        <hr class="hr-main">
+        <hr class="hr-secondary">
+    </div>
+    <h6 class="mt-1">Zakoupeno <strong>{{ data.total_items }}</strong> položek</h6>
+    <hr style="margin:0 !important;">
+    <h6 class="mt-1">Celková útrata: {{ data.total_spent }} Kč</h6>
+    <h6>Procento z celkových nákladů: {{ data.percentage_of_total|floatformat:2 }}%</h6>
+{% endfor %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var ctx = document.getElementById('shopChart').getContext('2d');
+        var shopChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: [{% for category, data in outcomes_by_category.items %}"{{ category }}"{% if not forloop.last %}, {% endif %}{% endfor %}],
+                datasets: [{
+                    label: 'Procenta celkových nákladů',
+                    data: [{% for category, data in outcomes_by_category.items %}{{ data.percentage_of_total }}{% if not forloop.last %}, {% endif %}{% endfor %}],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return tooltipItem.label + ': ' + tooltipItem.raw + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}
