@@ -2,39 +2,59 @@
 # Create your views here.
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Income, Outcome, Category
-from django.db.models import Sum, Count
+from django.db.models import Sum, Count, Avg
 from .forms import IncomeForm, OutcomeForm, CategoryForm
 from django.utils import timezone
 
 def index(request):
     return render(request, 'index.html')
 
+
+Outcome
+
+
 def statistics(request):
     categories = Category.objects.filter(name__icontains='nákup')
-    total_amount = Outcome.objects.filter(category__in=categories).aggregate(Sum('amount'))['amount__sum'] or 1  # Ochrana proti dělení nulou
-
+    total_amount = Outcome.objects.filter(category__in=categories).aggregate(Sum('amount'))['amount__sum'] or 1
     outcomes_by_category = {}
 
+    # Statistiky pro výdaje
+    total_items_all = 0
     for category in categories:
         outcomes = Outcome.objects.filter(category=category)
         total_items = outcomes.aggregate(Count('id'))['id__count']
         total_spent = outcomes.aggregate(Sum('amount'))['amount__sum'] or 0
+        avg_spent = outcomes.aggregate(Avg('amount'))['amount__avg'] or 0
         percentage_of_total = (total_spent / total_amount) * 100
-
         outcomes_by_category[category.name] = {
             'outcomes': outcomes,
             'total_items': total_items,
             'total_spent': total_spent,
+            'avg_spent': avg_spent,
             'percentage_of_total': percentage_of_total,
         }
+        total_items_all += total_items
+
+    # Statistiky pro příjmy
+    total_income_amount = Income.objects.aggregate(Sum('amount'))['amount__sum'] or 1
+    income_stats = Income.objects.aggregate(
+        total_amount=Sum('amount'),
+        avg_amount=Avg('amount'),
+        count=Count('id')
+    )
+
+    # Bilance mezi příjmy a výdaji
+    balance = (total_income_amount - total_amount) / total_income_amount * 100
 
     context = {
         'outcomes_by_category': outcomes_by_category,
         'total_amount': total_amount,
+        'total_income_amount': total_income_amount,
+        'income_stats': income_stats,
+        'total_items_all': total_items_all,
+        'balance': balance,
     }
-
     return render(request, 'statistics.html', context)
-
 
 def add_income(request):
 

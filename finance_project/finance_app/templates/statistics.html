@@ -3,5 +3,44 @@
 <div class="container">
     <h2 class="py-2"><i class="bi bi-shield-plus"></i> Obchodní statistika</h2>
     <div class="hr-container"><hr class="hr-main"><hr class="hr-secondary"></div>
-</div> 
+    <div class="row">
+        <div class="col-lg-6 mb-4 mt-4">
+            <div class="card" style="background-color: #0a0a32; color: white;">
+                <div class="card-body">
+                    <h5 class="card-title">Celkové výdaje</h5>
+                    <p>Celkový počet zakoupených položek: <strong>{{ total_items_all }}</strong></p>
+                    <p>Celková částka výdajů: <strong>{{ total_amount|floatformat:2 }} Kč</strong></p>
+                    <p>Bilance (rozdíl mezi příjmy a výdaji): <strong>{{ balance|floatformat:2 }}%</strong></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 mb-4 mt-4">
+            <div class="card" style="background-color: #0a0a32; color: white;">
+                <div class="card-body">
+                    <h5 class="card-title">Celkové příjmy</h5>
+                    <p>Celková částka příjmů: <strong>{{ total_income_amount|floatformat:2 }} Kč</strong></p>
+                    <p>Průměrná částka příjmů: <strong>{{ income_stats.avg_amount|floatformat:2 }} Kč</strong></p>
+                    <p>Počet příjmů: <strong>{{ income_stats.count }}</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h2 class="py-2"><i class="bi bi-shop"></i> Statistika obchodů</h2>
+    <div class="hr-container"><hr class="hr-main"><hr class="hr-secondary"></div>
+    <div class="row">
+        {% for category, data in outcomes_by_category.items %}
+        <div class="col-lg-6 mb-4 mt-4">
+            <div class="card" style="background-color: #0a0a32; color: white;">
+                <div class="card-body">
+                    <h4>{{ category }}</h4>
+                    <p>Zakoupeno položek: <strong>{{ data.total_items }}</strong></p>
+                    <p>Celková útrata: <strong>{{ data.total_spent|floatformat:2 }} Kč</strong></p>
+                    <p>Průměrná útrata: <strong>{{ data.avg_spent|floatformat:2 }} Kč</strong></p>
+                    <p>Procento z celkových nákladů: <strong>{{ data.percentage_of_total|floatformat:2 }}%</strong></p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}
