@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Income, Outcome, Category
 from django.db.models import Sum, Count
 from .forms import IncomeForm, OutcomeForm, CategoryForm
+from django.utils import timezone
 
 def index(request):
     return render(request, 'index.html')
@@ -49,16 +50,26 @@ def add_income(request):
 
 
 def add_outcome(request):
-    form = OutcomeForm(request.POST or None)
+    if request.method == 'POST':
+        form = OutcomeForm(request.POST)
+        if form.is_valid():
+            form.save()
 
-    if request.method == 'POST' and form.is_valid():
-        form.save()
-        form = OutcomeForm()
+            # Uchování zadaného data a kategorie do session
+            request.session['last_date'] = form.cleaned_data['date'].isoformat()
+            request.session['last_category'] = form.cleaned_data['category'].id
+
+            return redirect('add_outcome')
+    else:
+        # Načtení zadaného data a kategorie ze session, pokud existují
+        initial_data = {
+            'date': request.session.get('last_date', timezone.now().date()),
+            'category': request.session.get('last_category', Category.objects.first().id)
+        }
+        form = OutcomeForm(initial=initial_data)
 
     outcome_all = Outcome.objects.aggregate(Sum('amount'))['amount__sum'] or 0
-
     return render(request, 'add_outcome.html', {'form': form, 'outcome_all': outcome_all})
-
 
 def list_transactions(request):
     incomes = Income.objects.all()
