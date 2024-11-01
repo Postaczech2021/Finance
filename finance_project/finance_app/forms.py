@@ -37,6 +37,7 @@ class OutcomeForm(forms.ModelForm):
             'quantity':'Množství',
             'amount': 'Částka',
             'category': 'Kategorie',
+            'date':'Datum',
         }
 
     def __init__(self, *args, **kwargs):
