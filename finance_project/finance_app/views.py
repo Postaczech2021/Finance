@@ -35,6 +35,10 @@ def statistics(request):
         }
         total_items_all += total_items
 
+    # Seřadit kategorie podle celkové útraty (od nejvyšší k nejnižší)
+    sorted_outcomes_by_category = dict(
+        sorted(outcomes_by_category.items(), key=lambda item: item[1]['total_spent'], reverse=True))
+
     # Statistiky pro příjmy
     total_income_amount = Income.objects.aggregate(Sum('amount'))['amount__sum'] or 1
     income_stats = Income.objects.aggregate(
@@ -47,7 +51,7 @@ def statistics(request):
     balance = (total_income_amount - total_amount) / total_income_amount * 100
 
     context = {
-        'outcomes_by_category': outcomes_by_category,
+        'outcomes_by_category': sorted_outcomes_by_category,
         'total_amount': total_amount,
         'total_income_amount': total_income_amount,
         'income_stats': income_stats,
