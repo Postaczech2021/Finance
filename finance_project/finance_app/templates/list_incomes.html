@@ -1,0 +1,36 @@
+
+
+  <h6 class="py-4">Celkové příjmy: <strong>{{ total_income|floatformat:0 }} Kč</strong></h6>
+
+            {% if no_incomes %}
+                <p class="py-3">Žádné příjmy</p>
+            {% else %}
+
+                <div class="row">
+                    <div class="col-12">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Název</th>
+                                    <th>Částka</th>
+                                    <th>Datum</th>
+                                    <th>Akce</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in incomes %}
+                                    <tr>
+                                        <td>{{ item.name }}</td>
+                                        <td style="color:#9bf542;">+ {{ item.amount|floatformat:0 }} Kč</td>
+                                        <td>{{ item.date|date:"d.m.Y" }}</td>
+                                        <td>
+                                            <a class="btn darkbtn" href='{% url 'edit_income' item.id  %}'><i class="bi bi-pen"></i></a>
+                                             </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% endif %}
+

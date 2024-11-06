@@ -1,6 +1,7 @@
 
 # Create your views here.
 from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse
 from .models import Income, Outcome, Category
 from django.db.models import Sum, Count, Avg
 from .forms import IncomeForm, OutcomeForm, CategoryForm
@@ -8,10 +9,6 @@ from django.utils import timezone
 
 def index(request):
     return render(request, 'index.html')
-
-
-Outcome
-
 
 def statistics(request):
     categories = Category.objects.filter(name__icontains='nákup')
@@ -95,22 +92,44 @@ def add_outcome(request):
     outcome_all = Outcome.objects.aggregate(Sum('amount'))['amount__sum'] or 0
     return render(request, 'add_outcome.html', {'form': form, 'outcome_all': outcome_all})
 
-def list_transactions(request):
-    incomes = Income.objects.all()
-    outcomes = Outcome.objects.all()
 
+def prepare_context(shopname=None):
+    incomes = Income.objects.all()
+    categories = Category.objects.filter(is_income=False)
     total_income = Income.objects.aggregate(Sum('amount'))['amount__sum'] or 0
     total_outcome = Outcome.objects.aggregate(Sum('amount'))['amount__sum'] or 0
+
+    category = None
+    outcomes = []
+    outcomes_count = 0
+
+    if shopname:
+        category = Category.objects.filter(name=shopname).first()
+        outcomes = Outcome.objects.filter(category=category.id) if category else []
+        outcomes_count = outcomes.count() if category else 0
 
     context = {
         'incomes': incomes,
         'outcomes': outcomes,
-        'no_incomes': not incomes.exists(),
-        'no_outcomes': not outcomes.exists(),
+        'categories': categories,
+        'category': category,
+        'shopname': shopname,
         'total_income': total_income,
         'total_outcome': total_outcome,
+        'outcomes_count': outcomes_count,
+        'total_outcomes_count': Outcome.objects.count(),
+        'no_incomes': not incomes.exists(),
+        'no_outcomes': not outcomes.exists() if shopname else False,
     }
+    return context
 
+def list_transactions(request):
+    context = prepare_context()
+    return render(request, 'list.html', context)
+
+def list_transactions_by_shop(request):
+    shopname = request.GET.get('shopname')
+    context = prepare_context(shopname=shopname)
     return render(request, 'list.html', context)
 
 
