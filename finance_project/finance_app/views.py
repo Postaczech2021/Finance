@@ -69,7 +69,6 @@ def add_income(request):
 
     return render(request, 'add_income.html', {'form': form, 'income_all': income_all})
 
-
 def add_outcome(request):
     if request.method == 'POST':
         form = OutcomeForm(request.POST)
@@ -93,45 +92,16 @@ def add_outcome(request):
     return render(request, 'add_outcome.html', {'form': form, 'outcome_all': outcome_all})
 
 
-def prepare_context(shopname=None):
-    incomes = Income.objects.all()
-    categories = Category.objects.filter(is_income=False)
-    total_income = Income.objects.aggregate(Sum('amount'))['amount__sum'] or 0
-    total_outcome = Outcome.objects.aggregate(Sum('amount'))['amount__sum'] or 0
-
-    category = None
-    outcomes = []
-    outcomes_count = 0
-
-    if shopname:
-        category = Category.objects.filter(name=shopname).first()
-        outcomes = Outcome.objects.filter(category=category.id) if category else []
-        outcomes_count = outcomes.count() if category else 0
+def list_outcomes(request):
+    outcomes = Outcome.objects.all()
+    total_spent = outcomes.aggregate(Sum('amount'))['amount__sum'] or 0
 
     context = {
-        'incomes': incomes,
+
         'outcomes': outcomes,
-        'categories': categories,
-        'category': category,
-        'shopname': shopname,
-        'total_income': total_income,
-        'total_outcome': total_outcome,
-        'outcomes_count': outcomes_count,
-        'total_outcomes_count': Outcome.objects.count(),
-        'no_incomes': not incomes.exists(),
-        'no_outcomes': not outcomes.exists() if shopname else False,
+        'total_spent': total_spent,
     }
-    return context
-
-def list_transactions(request):
-    context = prepare_context()
-    return render(request, 'list.html', context)
-
-def list_transactions_by_shop(request):
-    shopname = request.GET.get('shopname')
-    context = prepare_context(shopname=shopname)
-    return render(request, 'list.html', context)
-
+    return render(request,'list_outcomes.html',context)
 
 def edit_income(request, income_id):
     income = get_object_or_404(Income, id=income_id)
@@ -139,7 +109,7 @@ def edit_income(request, income_id):
         form = IncomeForm(request.POST, instance=income)
         if form.is_valid():
             form.save()
-            return redirect('list_transactions')
+            return redirect('list_incomes')
     else:
         form = IncomeForm(instance=income)
     return render(request, 'edit_income.html', {'form': form})
