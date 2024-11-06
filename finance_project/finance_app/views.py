@@ -6,6 +6,7 @@ from .models import Income, Outcome, Category
 from django.db.models import Sum, Count, Avg
 from .forms import IncomeForm, OutcomeForm, CategoryForm
 from django.utils import timezone
+from django.core.paginator import Paginator
 
 def index(request):
     return render(request, 'index.html')
@@ -94,12 +95,17 @@ def add_outcome(request):
 
 def list_outcomes(request):
     outcomes = Outcome.objects.all()
-    total_spent = outcomes.aggregate(Sum('amount'))['amount__sum'] or 0
+    total_outcome = outcomes.aggregate(Sum('amount'))['amount__sum'] or 0
+    paginator = Paginator(outcomes, 10)
+    page_number = request.GET.get('page')
+    outcomes = paginator.get_page(page_number)
+    paginator_show = False
 
     context = {
 
         'outcomes': outcomes,
-        'total_spent': total_spent,
+        'total_outcome': total_outcome,
+        'paginator_show': paginator_show,
     }
     return render(request,'list_outcomes.html',context)
 
